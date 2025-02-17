@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'http://drawerly.test/api/v1',
-  // baseURL: 'https://admin.dawarlykw.net/api/v1',
+  // baseURL: 'http://drawerly.test/api/v1',
+  baseURL: 'https://admin.dawarlykw.net/api/v1',
 
   headers: {
     'Content-Type': 'application/json',

@@ -6,7 +6,8 @@ import { useEffect } from "react";
 import useAuthContext from '../../context/AuthContext'
 import axios from '../../api/axios'
 const Signup = () => {
-    const { user, login,register, logout, getUser } = useAuthContext()
+  const { user, login, register, logout, getUser } = useAuthContext()
+  const [isLoading , setIsLoading] = useState(false)
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [phone, setPhone] = useState(null);
@@ -19,7 +20,8 @@ const Signup = () => {
   const [categories , setCategories] = useState([])
   const [category, setCategory] = useState({ sub_categories: [] })
   const [subCategory , setSubCategory] = useState({})
-  const [subCategories , setSubCategories] = useState([])
+  const [subCategories, setSubCategories] = useState([])
+  const [errors, setErrors] = useState({ })
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -45,6 +47,7 @@ const Signup = () => {
   };
 
   const handleRegistration = async () => {
+    setIsLoading(true)
     try {
       let form = {
         name,
@@ -83,8 +86,13 @@ const Signup = () => {
         navigate("/registration-success");
       }
     } catch (error) {
+      setErrors(error.response.data.errors)
       console.error("Registration failed:", error);
+      setTimeout(() => {
+       setErrors({}) 
+      },10000)
     }
+     setIsLoading(false)
   };  const getProvinces = async () => {
     const { data } = await axios.get("/provinces");
     setProvinces(data);
@@ -100,6 +108,7 @@ const Signup = () => {
   return (
     <div className='max-w-7xl lg:mx-auto md:mx-6 mx-4 py-16 '>
       <div className='md:mb-0 mb-24'>
+        
         <h2 className="text-[#0f1728] text-3xl text-center font-normal font-['Poppins'] leading-[38px] mb-6">
           Create an account
         </h2>
@@ -112,6 +121,7 @@ const Signup = () => {
             >
               Name or Trade Name*
             </label>
+            <span className='text-red-500 text-xs'>{errors.name}</span>
             <input
               id='fullName'
               onChange={(e) => setName(e.target.value)}
@@ -129,6 +139,7 @@ const Signup = () => {
             >
               Phone*
             </label>
+            <span className='text-red-500 text-xs'>{errors.phone}</span>
             <input
               onChange={(e) => setPhone(e.target.value)}
               id='phone'
@@ -145,6 +156,7 @@ const Signup = () => {
             >
               Password*
             </label>
+            <span className='text-red-500 text-xs'>{errors.password}</span>
             <input
               onChange={(e) => setPassword(e.target.value)}
               id='password'
@@ -178,6 +190,7 @@ const Signup = () => {
               <span className='text-sm font-medium text-black'>
                 Upload Advertising image
               </span>
+              <span className='text-red-500 text-xs'>{errors.image}</span>
               <input
                 type='file'
                 className='hidden'
@@ -194,6 +207,7 @@ const Signup = () => {
             >
               Address*
             </label>
+            <span className='text-red-500 text-xs'>{errors.address}</span>
             <textarea
               name=''
               className="w-full px-4 py-2 border rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
@@ -217,6 +231,7 @@ const Signup = () => {
             >
               About*
             </label>
+            <span className='text-red-500 text-xs'>{errors.about}</span>
             <textarea
               name=''
               className="w-full px-4 py-2 border rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
@@ -241,6 +256,7 @@ const Signup = () => {
             >
               Provinces*
             </label>
+            <span className='text-red-500 text-xs'>{errors.province_id}</span>
             <select
               id='provinces'
               onChange={(e) => setProvince(e.target.value)}
@@ -261,10 +277,11 @@ const Signup = () => {
             >
               Choose the section*
             </label>
+            <span className='text-red-500 text-xs'>{errors.category_id}</span>
             <select
               id='section'
               onChange={(e) => setCategory(JSON.parse(e.target.value))}
-              className="w-full px-4 py-2 bg-white border border-[#cfd4dc] rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
+              className="w-full px-4 py-2 bg-white border border-[#0e0f10] rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
             >
               <option value=''>Select a category</option>
               {categories.map((category) => (
@@ -281,15 +298,16 @@ const Signup = () => {
               htmlFor='categories'
               className="block text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
             >
-             Select Categories*
+              Select Categories*
             </label>
+            <span className='text-red-500 text-xs'>{errors.categories}</span>
             <div className='flex justify-between gap-4'>
               <select
                 onChange={(e) => setSubCategory(JSON.parse(e.target.value))}
                 id='categories'
                 className="w-full px-4 py-2 bg-white border border-[#cfd4dc] rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
               >
-                <option value="">Select Category</option>
+                <option value=''>Select Category</option>
                 {category.sub_categories?.map((category) => (
                   <option key={category.id} value={JSON.stringify(category)}>
                     {category.name}
@@ -298,33 +316,50 @@ const Signup = () => {
               </select>
               <button
                 onClick={() => {
-                  if (!subCategories.some(cat => cat.id === subCategory.id)) {
+                  if (!subCategories.some((cat) => cat.id === subCategory.id)) {
                     setSubCategories([...subCategories, subCategory])
                   }
                 }}
                 className="w-1/2 px-4 py-2 bg-[#0083b3] text-white rounded-xl text-base font-semibold font-['Poppins'] leading-normal"
               >
                 Add
-              </button>            </div>
+              </button>{' '}
+            </div>
           </div>
           <div>
             <h1>Categories</h1>
-          
-            <div className="flex flex-wrap gap-2">
+            <div className='flex flex-wrap gap-2'>
               {subCategories.map((category, index) => (
-                <div key={index} className="flex items-center bg-gray-100 px-3 py-1 rounded-full">
-                  <span className="text-sm text-gray-700">{category.name}</span>
-                  <button 
-                    onClick={() => setSubCategories(subCategories.filter((_, i) => i !== index))}
-                    className="ml-2 text-gray-500 hover:text-red-500"
+                <div
+                  key={index}
+                  className='flex items-center bg-gray-100 px-3 py-1 rounded-full'
+                >
+                  <span className='text-sm text-gray-700'>{category.name}</span>
+                  <button
+                    onClick={() =>
+                      setSubCategories(
+                        subCategories.filter((_, i) => i !== index)
+                      )
+                    }
+                    className='ml-2 text-gray-500 hover:text-red-500'
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      className='h-4 w-4'
+                      viewBox='0 0 20 20'
+                      fill='currentColor'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                        clipRule='evenodd'
+                      />
                     </svg>
                   </button>
                 </div>
               ))}
-            </div>          </div>
+            </div>{' '}
+          </div>
           {/* Agreement */}
           <div className='flex items-center space-x-2'>
             <div
@@ -394,10 +429,24 @@ const Signup = () => {
           </div>
 
           {/* Submit Button */}
+
           <button
             onClick={handleRegistration}
-            className="w-full px-4 py-2 bg-[#0083b3] text-white rounded-full text-base font-semibold font-['Poppins'] leading-normal"
+            className="w-full px-4 py-2 bg-[#0083b3] text-white rounded-full text-base font-semibold font-['Poppins'] flex items-start justify-center gap-3 leading-normal"
+            disabled={isLoading}
           >
+            {isLoading ? (
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 24 24'
+                fill='currentColor'
+                className='w-7 h-7 animate-spin'
+              >
+                <path d='M18.364 5.63604L16.9497 7.05025C15.683 5.7835 13.933 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12H21C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C14.4853 3 16.7353 4.00736 18.364 5.63604Z'></path>
+              </svg>
+            ) : (
+              ''
+            )}
             Registration
           </button>
         </div>

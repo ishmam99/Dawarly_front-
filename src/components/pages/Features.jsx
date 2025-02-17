@@ -13,7 +13,7 @@ const Features = () => {
         </div>
 
         {/* Right Section */}
-        <div className="md:px-2 space-y-6">
+        {/* <div className="md:px-2 space-y-6">
           <div className="text-black text-lg font-normal font-['Poppins']">
             Borem ipsum dolor sit amet, consectetur
             <br /> adipiscing elit. Nunc vulputate libero
@@ -23,7 +23,7 @@ const Features = () => {
               View all
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

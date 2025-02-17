@@ -58,7 +58,7 @@ const [loading, setLoading] = useState(false)
                     type='text'
                     name='first_name'
                     placeholder='First name'
-                    className='w-full border border-gray-300 rounded-md p-2'
+                    className='w-full border bg-white border-gray-300 rounded-md p-2'
                     value={formData.first_name}
                     onChange={handleChange}
                   />
@@ -66,7 +66,7 @@ const [loading, setLoading] = useState(false)
                     type='text'
                     name='last_name'
                     placeholder='Last name'
-                    className='w-full border border-gray-300 rounded-md p-2'
+                    className='w-full bg-white border border-gray-300 rounded-md p-2'
                     value={formData.last_name}
                     onChange={handleChange}
                   />
@@ -76,7 +76,7 @@ const [loading, setLoading] = useState(false)
                     type='email'
                     name='email'
                     placeholder='Your email'
-                    className='w-full border border-gray-300 rounded-md p-2 pl-10'
+                    className='w-full border bg-white border-gray-300 rounded-md p-2 pl-10'
                     value={formData.email}
                     onChange={handleChange}
                   />
@@ -94,17 +94,17 @@ const [loading, setLoading] = useState(false)
                     <path d='M2 6l10 7 10-7' />
                   </svg>
                 </div>
-                <div className='flex items-center bg-white border border-gray-300 rounded-md overflow-hidden'>
+                <div className='flex items-center  bg-white border border-gray-300 rounded-md overflow-hidden'>
                   {/* Country Code Dropdown */}
-                  <div className='flex items-center bg-white px-3'>
+                  <div className='flex items-center bg-white'>
                     <select
                       name='countryCode'
                       className='bg-transparent focus:outline-none text-gray-800'
                     >
-                      <option value='+92'>+92</option>
-                      <option value='+1'>+1</option>
-                      <option value='+44'>+44</option>
-                      {/* Add more country codes as needed */}
+                      <option value='+965'>+965</option>
+                      {/* <option value='+1'>+1</option>
+                      <option value='+44'>+44</option> */}
+                    
                     </select>
                     <span className='text-gray-400'>|</span>
                   </div>
@@ -123,7 +123,7 @@ const [loading, setLoading] = useState(false)
                   name='message'
                   placeholder='How did you hear about us?'
                   rows='4'
-                  className='w-full border border-gray-300 rounded-md p-2'
+                  className='w-full border bg-white border-gray-300 rounded-md p-2'
                   value={formData.message}
                   onChange={handleChange}
                 ></textarea>
