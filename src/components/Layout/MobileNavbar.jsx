@@ -6,53 +6,53 @@ import { Link } from "react-router-dom";
 
 const BottomNavbar = () => {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-[#F3F7FA] drop-shadow-2xl rounded-t-2xl lg:hidden">
-      <div className="flex justify-around items-center h-16">
+    <nav className='fixed bottom-0 left-0 right-0 bg-[#F3F7FA] drop-shadow-2xl rounded-t-2xl lg:hidden'>
+      <div className='flex justify-around items-center h-16'>
         {/* Icon 1 */}
-        <div className="hover:bg-[#0083B3] p-2 rounded-full group flex items-center">
-          <Link to="/verification">
+        <div className='hover:bg-[#0083B3] p-2 rounded-full group flex items-center'>
+          <Link to='/login'>
             <img
               src={edit}
-              alt="edit"
-              className="w-7 h-7 group-hover:filter group-hover:brightness-0 group-hover:invert "
+              alt='edit'
+              className='w-7 h-7 group-hover:filter group-hover:brightness-0 group-hover:invert '
             />
           </Link>
         </div>
 
         {/* Icon 2 */}
-        <div className="hover:bg-[#0083B3] p-2 rounded-full group">
+        <div className='hover:bg-[#0083B3] p-2 rounded-full group'>
           <img
             src={search}
-            alt="search"
-            className="w-7 h-7 object-cover group-hover:filter group-hover:brightness-0 group-hover:invert"
+            alt='search'
+            className='w-7 h-7 object-cover group-hover:filter group-hover:brightness-0 group-hover:invert'
           />
         </div>
 
         {/* Icon 3 */}
-        <div className="hover:bg-[#0083B3] p-2 rounded-full group">
-          <Link to="/profile">
+        <div className='hover:bg-[#0083B3] p-2 rounded-full group'>
+          <Link to='/profile'>
             <img
               src={profile}
-              alt="profile"
-              className="w-7 h-7 object-cover group-hover:filter group-hover:brightness-0 group-hover:invert"
+              alt='profile'
+              className='w-7 h-7 object-cover group-hover:filter group-hover:brightness-0 group-hover:invert'
             />
           </Link>
         </div>
 
         {/* Icon 4 */}
 
-        <div className="hover:bg-[#0083B3] p-2 rounded-full group">
-          <Link to="/">
+        <div className='hover:bg-[#0083B3] p-2 rounded-full group'>
+          <Link to='/'>
             <img
               src={home}
-              alt="home"
-              className="w-7 h-7 object-cover group-hover:filter group-hover:brightness-0 group-hover:invert"
+              alt='home'
+              className='w-7 h-7 object-cover group-hover:filter group-hover:brightness-0 group-hover:invert'
             />
           </Link>
         </div>
       </div>
     </nav>
-  );
+  )
 };
 
 export default BottomNavbar;

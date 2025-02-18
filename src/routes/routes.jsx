@@ -16,6 +16,8 @@ import PaymentSuccess from "../components/pages/PaymentSuccess";
 import RegistrationSuccess from "../components/pages/RegistrationSuccess";
 import Contact from "../components/pages/Contact";
 import About from "../components/pages/About";
+import cancelled from "../components/pages/cancelled";
+import Technician from '../components/pages/Technician'
 // import { LogIn } from "lucide-react";
 
 const router = createBrowserRouter([
@@ -36,7 +38,7 @@ const router = createBrowserRouter([
         element: <RegistrationSuccess></RegistrationSuccess>, // Home is the default component
       },
       {
-        path: '/verification',
+        path: '/login',
         element: <Login></Login>, // Home is the default component
       },
       {
@@ -52,6 +54,10 @@ const router = createBrowserRouter([
         element: <Success></Success>, // Home is the default component
       },
       {
+        path: '/cancelled',
+        element: <cancelled></cancelled>, // Home is the default component
+      },
+      {
         path: '/contact',
         element: <Contact />,
       },
@@ -62,6 +68,10 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <ProfilePage></ProfilePage>, // Home is the default component
+      },
+      {
+        path: '/technicians/:id',
+        element: <Technician></Technician>, // Home is the default component
       },
       {
         path: '/category/:slug',

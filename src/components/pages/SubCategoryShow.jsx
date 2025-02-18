@@ -91,43 +91,36 @@ const location = useLocation()
 
       {/* Electricians Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 gap-3 mt-8 lg:mx-0 md:mx-4 px-4 font-['Poppins'] mb-24">
-        {subCategory.technicians.map((electrician, index) => (
-          <Link
-            to={'/profilePage'}
-            className='py-4 bg-white rounded-lg border border-gray-300 flex flex-col items-center shadow-sm cursor-pointer hover:shadow-md'
-            key={index}
-            className='py-4 bg-white rounded-lg border border-gray-300 flex flex-col items-center shadow-sm cursor-pointer hover:shadow-md'
-          >
-            <div className='lg:w-[111px] lg:h-[111px] md:w-[80px] md:h-[80px] w-[60px] h-[60px] md:mt-6 bg-[#d9d9d9] rounded-full'>
-              <img src={electrician.image} class="w-full h-full" alt='' />
-            </div>
-            <h3 className='mt-4 text-black text-base font-medium '>
-              {electrician.name}
-            </h3>
-            <p className='mt-2 text-black text-xs font-normal text-center leading-tight md:px-4 px-1'>
-              {electrician.description}
-            </p>
-            <div className='flex gap-2 mt-4'>
-              {/* <div className=" lg:p-2 p-1 bg-white rounded-full shadow-sm flex justify-center items-center">
-                <img src={whatsapp} alt="WhatsApp" className="w-7 h-7" />
+        {subCategory.technicians.map((technician, index) => (
+          technician.status !== 'pending' ? (
+            <Link
+              to={'/technicians/' + technician.id}
+              key={index}
+              className='py-4 bg-white rounded-lg border border-gray-300 flex flex-col items-center shadow-sm cursor-pointer hover:shadow-md'
+            >
+              <div className='lg:w-[111px] lg:h-[111px] md:w-[80px] md:h-[80px] w-[60px] h-[60px] md:mt-6 bg-[#d9d9d9] rounded-full'>
+                <img src={technician.image} className='w-full h-full' alt='' />
               </div>
-              <div className="lg:p-2 p-1 bg-white rounded-full shadow-sm flex justify-center items-center">
-                <img src={call} alt="Phone" className="w-5 h-5" />
-              </div> */}
-
-              <div className='p-1 bg-white shadow-sm rounded-full flex justify-center items-center'>
-                <img src={whatsapp} alt='WhatsApp' className='w-7 h-7' />
+              <h3 className='mt-4 text-black text-base font-medium '>
+                {technician.name}
+              </h3>
+              <p className='mt-2 text-black text-xs font-normal text-center leading-tight md:px-4 px-1'>
+                {technician.description}
+              </p>
+              <div className='flex gap-2 mt-4'>
+                <div className='p-1 bg-white shadow-sm rounded-full flex justify-center items-center'>
+                  <img src={whatsapp} alt='WhatsApp' className='w-7 h-7' />
+                </div>
+                <div className='w-9 h-9 bg-white shadow-sm rounded-full flex justify-center items-center'>
+                  <img src={call} alt='call' className='w-4 h-4' />
+                </div>
               </div>
-              <div className='w-9 h-9 bg-white shadow-sm rounded-full flex justify-center items-center'>
-                <img src={call} alt='call' className='w-4 h-4' />
-              </div>
-            </div>
-            <button className='mt-6 px-5 py-1 bg-[#0083b3] text-white text-sm font-medium rounded-[100px]'>
-              More Info
-            </button>
-          </Link>
-        ))}
-      </div>
+              <button className='mt-6 px-5 py-1 bg-[#0083b3] text-white text-sm font-medium rounded-[100px]'>
+                More Info
+              </button>
+            </Link>
+          ) : null
+        ))}      </div>
     </div>
   )
 };

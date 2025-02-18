@@ -19,9 +19,10 @@ const Footer = () => {
             <img src={logo} alt='Dawarly Logo' />
           </div>
           <p className='text-gray-600 text-sm max-w-sm'>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. It has survived not only five centuries but also the leap
-            into electronic typesetting.
+            شركة النوافذ للدعاية والتسويق الإلكتروني . مقرها الكويت وتقوم على
+            تقديم جميع خدمات الدعاية والإعلان كخدمات التصميم والطباعة وإنشاء
+            المواقع الإلكترونية . ومتخصصون فى مجال التسويق والدعاية والإعلان.
+            للاستفسار والتواصل واتساب 00965320323
           </p>
         </div>
 

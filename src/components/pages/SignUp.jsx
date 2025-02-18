@@ -13,14 +13,15 @@ const Signup = () => {
   const [phone, setPhone] = useState(null);
   const [address, setAddress] = useState(null);
   const [about, setAbout] = useState(null);
-  const [province, setProvince] = useState(null);
   const [password, setPassword] = useState(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [provinces , setProvinces] = useState([])
+  const [province , setProvince] = useState([])
   const [categories , setCategories] = useState([])
   const [category, setCategory] = useState({ sub_categories: [] })
   const [subCategory , setSubCategory] = useState({})
   const [subCategories, setSubCategories] = useState([])
+  const [selectedProvinces, setSelectedProvinces] = useState([])
   const [errors, setErrors] = useState({ })
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -55,7 +56,7 @@ const Signup = () => {
         password,
         phone,
         address,
-        province_id: province,
+        provinces: selectedProvinces.map(sub => sub.id),
         category_id: category.id,
         sub_categories: subCategories.map(sub => sub.id),
         image: imageSrc,
@@ -80,7 +81,7 @@ const Signup = () => {
         }
       });
       
-      if (response.status === 200) {
+      if (response.status === 201) {
          localStorage.setItem('user', JSON.stringify(response.data.user))
          localStorage.setItem('token', response.data.token)
         navigate("/registration-success");
@@ -108,7 +109,6 @@ const Signup = () => {
   return (
     <div className='max-w-7xl lg:mx-auto md:mx-6 mx-4 py-16 '>
       <div className='md:mb-0 mb-24'>
-        
         <h2 className="text-[#0f1728] text-3xl text-center font-normal font-['Poppins'] leading-[38px] mb-6">
           Create an account
         </h2>
@@ -249,25 +249,78 @@ const Signup = () => {
             /> </textarea> */}
           </div>
           {/* Provinces */}
+
           <div>
             <label
               htmlFor='provinces'
               className="block text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
             >
-              Provinces*
+              Select Provinces*
             </label>
-            <span className='text-red-500 text-xs'>{errors.province_id}</span>
-            <select
-              id='provinces'
-              onChange={(e) => setProvince(e.target.value)}
-              className="w-full px-4 py-2 bg-white border border-[#cfd4dc] rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
-            >
-              {provinces.map((province) => (
-                <option key={province.id} value={province.id}>
-                  {province.name}
-                </option>
+            <span className='text-red-500 text-xs'>{errors.provinces}</span>
+            <div className='flex justify-between gap-4'>
+              <select
+                onChange={(e) => setProvince(JSON.parse(e.target.value))}
+                id='provinces'
+                className="w-full px-4 py-2 bg-white border border-[#cfd4dc] rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
+              >
+                <option value=''>Select Province</option>
+                {provinces?.map((province) => (
+                  <option key={province.id} value={JSON.stringify(province)}>
+                    {province.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={() => {
+                  if (
+                    !selectedProvinces.some((cat) => cat.id === province.id)
+                  ) {
+                    setSelectedProvinces([
+                      ...selectedProvinces,
+                      province,
+                    ])
+                  }
+                }}
+                className="w-1/2 px-4 py-2 bg-[#0083b3] text-white rounded-xl text-base font-semibold font-['Poppins'] leading-normal"
+              >
+                Add
+              </button>{' '}
+            </div>
+          </div>
+          <div>
+            <h1>Provinces</h1>
+            <div className='flex flex-wrap gap-2'>
+              {selectedProvinces.map((province, index) => (
+                <div
+                  key={index}
+                  className='flex items-center bg-gray-100 px-3 py-1 rounded-full'
+                >
+                  <span className='text-sm text-gray-700'>{province.name}</span>
+                  <button
+                    onClick={() =>
+                      setSelectedProvinces(
+                        selectedProvinces.filter((_, i) => i !== index)
+                      )
+                    }
+                    className='ml-2 text-gray-500 hover:text-red-500'
+                  >
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      className='h-4 w-4'
+                      viewBox='0 0 20 20'
+                      fill='currentColor'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                  </button>
+                </div>
               ))}
-            </select>
+            </div>{' '}
           </div>
           {/* Section */}
           <div>

@@ -44,7 +44,8 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log(localStorage.getItem('token'))
       try {
-         const data = await axios.post('/logout');
+        const data = await axios.post('/logout');
+        useNavigate().redirect('/login');
       } catch (esd)
       {
          console.log(esd)

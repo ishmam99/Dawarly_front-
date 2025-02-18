@@ -1,17 +1,32 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate,useParams } from "react-router-dom";
 import mobileLogo from "../../assets/logo/mobile-logo-2.svg";
-
+import axios from '../../api/axios'
+import useAuthContext from '../../context/AuthContext'
 const Success = () => {
+  const { user, getUser } = useAuthContext()
   const navigate = useNavigate(); // React Router navigation
-
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search)
+  const paymentId = queryParams.get('paymentId')
+  const paymentCallback = async() => {
+    try {
+      const response = await axios.post('/payment/callback', { paymentId })
+      getUser()
+      const timer = setTimeout(() => {
+        navigate("/profile"); // Redirect to the signup page after 3 seconds
+      }, 3000);
+    } catch (error) {
+      console.error('Payment callback failed', error)
+    }
+  }
   useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate("/signup"); // Redirect to the signup page after 3 seconds
-    }, 3000);
-
-    return () => clearTimeout(timer); // Cleanup timer on unmount
-  }, [navigate]);
+    // const timer = setTimeout(() => {
+    //   navigate("/signup"); // Redirect to the signup page after 3 seconds
+    // }, 3000);
+  console.log(paymentId)
+paymentCallback()
+  }, []);
   return (
     <div className="min-h-[90vh]">
       <div className="flex justify-center items-center mb-10 md:hidden top-0 bottom-0">
