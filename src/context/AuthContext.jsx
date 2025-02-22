@@ -26,13 +26,14 @@ export const AuthProvider = ({ children }) => {
             // Save user and token to localStorage
             localStorage.setItem('user', JSON.stringify(response.data.user));
             localStorage.setItem('token', response.data.token);
-        }
-        return null; // Return null if no error occurred
+      }
+     
+        return response // Return null if no error occurred
     } catch (error) {
         // Check if error.response exists and log the message
         if (error.response) {
             console.error('Error response:', error.response.data);
-            return error.response.data.message; // Return the error message
+            return error.response; // Return the error message
         } else {
             console.error('Error message:', error.message);
             return 'An unexpected error occurred'; // Handle unexpected errors

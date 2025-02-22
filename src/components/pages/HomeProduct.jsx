@@ -35,14 +35,14 @@ const HomeProduct = () => {
       </div>
       <div className=''>
         <div className=" text-[#0083b3] text-center pb-4 text-[18px] font-['Poppins'] font-bold  uppercase lg:hidden">
-          Our Categories
+          الخدمات الرئيسية
         </div>
       </div>
       <div className='grid grid-cols-2 lg:grid-cols-4 lg:gap-[20px] md:gap-4 gap-2 md:mt-10 max-w-7xl lg:mx-auto md:mx-6 px-4 lg:px-4'>
         {categories.map((product, index) => (
-          <Link to={'category/'+product.slug}
+          <Link
+            to={'category/' + product.slug}
             key={index}
-           
             className='py-8 md:py-6 rounded-lg border-1 lg:px-6 md:px-4 px-2 w-full flex md:flex-col gap-2 items-center md:justify-center transition-all cursor-pointer border-[#0083b3] hover:bg-[#0083b3] group'
           >
             <div className='lg:w-16 lg:h-14 w-12 h-10 lg:mb-4 flex md:justify-center md:items-center'>
@@ -61,7 +61,7 @@ const HomeProduct = () => {
       <div className='flex justify-center items-center my-10'>
         <Link to='signup'>
           <button className="text-center px-8 py-3 bg-[#0083b3] rounded-full font-['Poppins'] text-white md:text-lg font-medium ">
-            Technical Worker Registration
+            سجل معنا
           </button>
         </Link>
       </div>

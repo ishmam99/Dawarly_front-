@@ -9,7 +9,9 @@ import whatsapp from "../../assets/pictures/whatsapp.svg";
 
 
 export const SubCategoryShow = () => {
-const location = useLocation()
+   const [provinces, setProvinces] = useState([])
+  const location = useLocation()
+  const [technicians, setTechnicians] = useState([])
   const navigate = useNavigate();
   const [subCategory, setSubCategory] = useState({
     technicians: [],
@@ -21,9 +23,15 @@ const location = useLocation()
   const getSubCategory = async () => {
     const { data } = await axios.get(location.pathname)
     setSubCategory(data);
+    setTechnicians(data.technicians)
   };
+   const getProvinces = async () => {
+     const { data } = await axios.get('/provinces')
+     setProvinces(data)
+   }
   useEffect(() => {
-   getSubCategory()
+    getSubCategory()
+    getProvinces()
   }, []);
   return (
     <div className='max-w-7xl mx-auto lg:my-16 bg-white'>
@@ -31,7 +39,7 @@ const location = useLocation()
         <img src={mobileLogo} alt='mobileLogo' className='w-24 h-24' />
       </div>
       {/* Header Section */}
-      <div className='text-center md:block hidden'>
+      <div className='text-center '>
         <div className="w-full text-[#0083b3] text-lg font-normal font-['Poppins'] uppercase leading-5 tracking-wide">
           Our Skilled People
         </div>
@@ -48,10 +56,42 @@ const location = useLocation()
               type='text'
               placeholder='Search'
               className='w-full h-full bg-transparent outline-none text-sm text-black'
-            />
+              onChange={(e) => {
+                const searchTerm = e.target.value.toLowerCase()
+                if (searchTerm === '') {
+                  setTechnicians(subCategory.technicians)
+                } else {
+                  const filtered = subCategory.technicians.filter((tech) =>
+                    tech.name.toLowerCase().includes(searchTerm)
+                  )
+                  setTechnicians(filtered)
+                }
+              }}
+            />{' '}
           </div>
           <div className="flex items-center gap-2 text-black md:text-lg font-normal font-['Poppins'] leading-7 tracking-wide">
             Filter By
+            <select
+              className='px-2 py-1 border border-[#b2b2b2] rounded-md'
+              onChange={(e) => {
+                const province = e.target.value
+                if (province === 'all') {
+                  setTechnicians(subCategory.technicians)
+                } else {
+                  const filtered = subCategory.technicians.filter((tech) =>
+                    tech.provincess.some((p) => p.name === province)
+                  )
+                  setTechnicians(filtered)
+                }
+              }}
+            >
+              <option value='all'>All Provinces</option>
+              {provinces.map((province) => (
+                <option key={province.id} value={province.name}>
+                  {province.name}
+                </option>
+              ))}
+            </select>
             <img
               src={filter}
               alt='Filter'
@@ -62,26 +102,60 @@ const location = useLocation()
       </div>
       <div className='md:hidden'>
         <div className='space-y-4 w-full md:px-0 px-6'>
-          <div className="flex items-center justify-between gap-2 text-black md:text-lg font-normal font-['Poppins'] leading-7 tracking-wide">
-            <div className='bg-[#0083B3] p-2 rounded-full '>
+        
+          <div className="flex mt-2 items-center justify-between gap-2 text-black md:text-lg font-normal font-['Poppins'] leading-7 tracking-wide">
+            {/* <div className='bg-[#0083B3] p-2 rounded-full '>
               <img
                 src={arrow}
                 alt='arrow'
                 className=' w-6 h-6 relative overflow-hidden'
               />
-            </div>
-            <div className="flex items-center gap-2 text-sm text-black font-['Poppins'] ">
-              Filter By
-              <img
+            </div> */}  <h2 className="text-nowrap"> Filter By </h2>
+          
+            <div className="flex w-full justify-between items-center gap-2 text-sm text-black font-['Poppins'] ">
+            
+              <select
+                className='px-4 w-full py-3 pe-4 border border-[#b2b2b2] rounded-4xl'
+                onChange={(e) => {
+                  const province = e.target.value
+                  if (province === 'all') {
+                    setTechnicians(subCategory.technicians)
+                  } else {
+                    const filtered = subCategory.technicians.filter((tech) =>
+                      tech.provincess.some((p) => p.name === province)
+                    )
+                    setTechnicians(filtered)
+                  }
+                }}
+              >
+                <option value='all'>All Provinces</option>
+                {provinces.map((province) => (
+                  <option key={province.id} value={province.name}>
+                    {province.name}
+                  </option>
+                ))}
+              </select>
+              {/* <img
                 src={filter}
                 alt='Filter'
                 className=' w-8 h-8 relative overflow-hidden'
-              />
+              /> */}
             </div>
-          </div>
+          </div>{' '}
           <div className=' max-w-md py-3 rounded-full border border-[#b2b2b2] flex items-center px-6'>
             <input
               type='text'
+              onChange={(e) => {
+                const searchTerm = e.target.value.toLowerCase()
+                if (searchTerm === '') {
+                  setTechnicians(subCategory.technicians)
+                } else {
+                  const filtered = subCategory.technicians.filter((tech) =>
+                    tech.name.toLowerCase().includes(searchTerm)
+                  )
+                  setTechnicians(filtered)
+                }
+              }}
               placeholder='Search'
               className='w-full h-full bg-transparent outline-none text-sm text-black'
             />
@@ -91,7 +165,7 @@ const location = useLocation()
 
       {/* Electricians Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-8 gap-3 mt-8 lg:mx-0 md:mx-4 px-4 font-['Poppins'] mb-24">
-        {subCategory.technicians.map((technician, index) => (
+        {technicians.map((technician, index) =>
           technician.status !== 'pending' ? (
             <Link
               to={'/technicians/' + technician.id}
@@ -120,7 +194,8 @@ const location = useLocation()
               </button>
             </Link>
           ) : null
-        ))}      </div>
+        )}{' '}
+      </div>
     </div>
   )
 };

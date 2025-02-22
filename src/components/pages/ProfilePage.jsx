@@ -12,7 +12,7 @@ import useAuthContext from '../../context/AuthContext'
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 const ProfilePage = () => {
-   const { user, login, logout } = useAuthContext()
+   const { user, login, logout ,getUser} = useAuthContext()
    const navigate = useNavigate();
   const electricians = [
     {
@@ -39,15 +39,12 @@ const ProfilePage = () => {
   }
   useEffect(() => {
     checkUser()
+    getUser()
    },[])
   return (
     <div className=' bg-white md:mt-16 max-w-7xl mx-auto'>
       <div className='flex justify-center items-center mt-2 mb-10 md:hidden top-0 bottom-0'>
-        <img
-          src={user?.technician?.image}
-          alt='mobileLogo'
-          className='w-24 h-24'
-        />
+        <img src={mobileLogo} alt='mobileLogo' className='w-24 h-24' />
       </div>
       {/* Section 1 */}
       <div className=' bg-white flex flex-col lg:flex-row justify-center items-center lg:gap-8 gap-4 md:mx-4 '>
@@ -110,63 +107,21 @@ const ProfilePage = () => {
               </span>
             )}
           </div>
-          <Link
-            to='/subscription-plan'
-            className='text-lg text-white px-3 py-1 rounded-lg bg-yellow-400 w-40'
-          >
-            Make Payment
-          </Link>
+          {new Date(user?.technician?.valid_till) > new Date() ? (
+            <div className='text-md text-white px-3 py-1 rounded-lg bg-blue-400 w-52 text-center'>
+              Valid till : {user?.technician?.valid_till}
+            </div>
+          ) : (
+            <Link
+              to='/subscription-plan'
+              className='text-lg text-white px-3 py-1 rounded-lg bg-yellow-400 w-40'
+            >
+              Make Payment
+            </Link>
+          )}{' '}
           <div className=' mt-[20px] text-justify text-black text-sm md:text-lg font-normal  md:leading-[30px]'>
             {user?.technician?.about}
           </div>
-        </div>
-      </div>
-
-      {/* Section 2 */}
-      <div className=" flex flex-col py-10 bg-white lg:mx-0 mx-4 font-['Poppins'] my-10">
-        {/* Heading */}
-        <div className='w-full mx-auto'>
-          <h2 className='text-[#282828] text-[28px] font-medium mb-8'>
-            Related Electricians
-          </h2>
-        </div>
-
-        {/* Grid Layout */}
-        <div className='grid grid-cols-2 lg:grid-cols-4 md:gap-8 gap-2 '>
-          {electricians.map((electrician, index) => (
-            <div
-              key={index}
-              className='w-full py-4 bg-white rounded-lg border border-gray-300 flex flex-col items-center shadow-sm'
-            >
-              <div className='lg:w-[120px] lg:h-[120px] md:w-[80px] md:h-[80px] w-[60px] h-[60px] bg-[#d9d9d9] rounded-full'></div>
-              <h3 className='text-black lg:text-lg md:text-base text-sm font-medium  mt-4'>
-                {electrician.name}
-              </h3>
-              <p className='text-black text-xs font-normal  leading-tight text-center lg:px-4 px-1 mt-2'>
-                {electrician.description}
-              </p>
-              <div className='flex lg:gap-4 gap-2 mt-4'>
-                <div className='p-1 bg-white shadow-sm rounded-full flex justify-center items-center'>
-                  <img src={whatsapp} alt='WhatsApp' className='w-7 h-7' />
-                </div>
-                <div className='w-9 h-9 bg-white shadow-sm rounded-full flex justify-center items-center'>
-                  <img src={call} alt='call' className='w-4 h-4' />
-                </div>
-                {/* <div className="w-9 h-9 bg-[#e8f9ff] rounded-full flex justify-center items-center">
-                  <img src={instagram} alt="Instagram" className="w-5 h-5" />
-                </div>
-                <div className="w-9 h-9 bg-[#e8f9ff] rounded-full flex justify-center items-center">
-                  <img src={facebook} alt="Facebook" className="w-5 h-5" />
-                </div>
-                <div className="w-9 h-9 bg-[#e8f9ff] rounded-full flex justify-center items-center">
-                  <img src={twieter} alt="Twitter" className="w-5 h-5" />
-                </div> */}
-              </div>
-              <button className="mt-6 px-8 py-2 bg-[#0083b3] text-white text-sm font-medium font-['Poppins'] rounded-[100px] tracking-tight">
-                More Info
-              </button>
-            </div>
-          ))}
         </div>
       </div>
     </div>

@@ -13,9 +13,9 @@ const Success = () => {
     try {
       const response = await axios.post('/payment/callback', { paymentId })
       getUser()
-      const timer = setTimeout(() => {
-        navigate("/profile"); // Redirect to the signup page after 3 seconds
-      }, 3000);
+      // const timer = setTimeout(() => {
+      //   navigate("/profile"); // Redirect to the signup page after 3 seconds
+      // }, 3000);
     } catch (error) {
       console.error('Payment callback failed', error)
     }
@@ -52,9 +52,8 @@ paymentCallback()
             </svg>
           </div>
           <p className="text-lg text-gray-700">
-            Thank you for <br />
-            Your diagnostics result will be delivered to you as soon as
-            possible.
+            Thank you for your payment<br />
+           Your payment has been successfully processed. Your Profile is now active and visible to the public.
           </p>
         </div>
       </div>

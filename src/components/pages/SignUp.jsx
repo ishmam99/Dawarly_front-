@@ -11,7 +11,7 @@ const Signup = () => {
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [phone, setPhone] = useState(null);
-  const [address, setAddress] = useState(null);
+  const [address, setAddress] = useState('address');
   const [about, setAbout] = useState(null);
   const [password, setPassword] = useState(null);
   const [imageSrc, setImageSrc] = useState(null);
@@ -47,7 +47,9 @@ const Signup = () => {
     }));
   };
 
-  const handleRegistration = async () => {
+  const handleRegistration = async (e) => {
+    e.preventDefault();
+    
     setIsLoading(true)
     try {
       let form = {
@@ -63,24 +65,17 @@ const Signup = () => {
         about,
         governorate: isChecked.governorate,
       };
-      // form.append("name", name);
-      // form.append("email", email);
-      // form.append("password", password);
-      // form.append("phone", phone);
-      // form.append("address", address);
-      // form.append("province_id", province);
-      // form.append("category_id", category.id);
-      // form.append("sub_category_id", subCategory);
-      // form.append("image", imageSrc);
-      // form.append("about", about);
-      // form.append("governorate", isChecked.governorate);
-      console.log(form)
+      if (imageSrc === null) {
+        setErrors({ image: 'Image is required' })	
+         setIsLoading(false)
+        return false
+      }
       const response = await axios.post("/register", form, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      
+      console.log(response)
       if (response.status === 201) {
          localStorage.setItem('user', JSON.stringify(response.data.user))
          localStorage.setItem('token', response.data.token)
@@ -94,8 +89,7 @@ const Signup = () => {
       },10000)
     }
      setIsLoading(false)
-  };  const getProvinces = async () => {
-    const { data } = await axios.get("/provinces");
+  };  const getProvinces = async () => {    const { data } = await axios.get("/provinces");
     setProvinces(data);
   };
   const getCategories = async () => {
@@ -112,52 +106,62 @@ const Signup = () => {
         <h2 className="text-[#0f1728] text-3xl text-center font-normal font-['Poppins'] leading-[38px] mb-6">
           Create an account
         </h2>
-        <div className='max-w-md mx-auto space-y-6'>
+        <form
+          onSubmit={handleRegistration}
+          className='max-w-md mx-auto space-y-6'
+        >
           {/* Full Name */}
           <div>
             <label
               htmlFor='fullName'
-              className="block text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
+              className="block text-right text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
             >
-              Name or Trade Name*
+              نبذة*
             </label>
-            <span className='text-red-500 text-xs'>{errors.name}</span>
+            <span className='text-red-500 text-xs'>{errors?.name}</span>
             <input
               id='fullName'
+              required
               onChange={(e) => setName(e.target.value)}
               type='text'
               placeholder='Enter your full name'
               className="w-full px-4 py-2 bg-white border border-[#cfd4dc] rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
             />
           </div>
-
           {/* Phone */}
           <div>
             <label
               htmlFor='phone'
-              className="block text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
+              className="block text-[#344053] mb-1 text-right text-sm font-medium font-['Poppins'] leading-tight"
             >
-              Phone*
+              الهاتف*
             </label>
-            <span className='text-red-500 text-xs'>{errors.phone}</span>
-            <input
-              onChange={(e) => setPhone(e.target.value)}
-              id='phone'
-              type='text'
-              placeholder='Enter your phone'
-              className="w-full px-4 py-2 border rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
-            />
+            <span className='text-red-500 text-xs'>{errors?.phone}</span>
+            <div className='relative'>
+              <span className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600'>
+                +965
+              </span>
+              <input
+                required
+                onChange={(e) => setPhone(e.target.value)}
+                id='phone'
+                type='text'
+                placeholder='Enter your phone'
+                className="w-full pl-14 px-4 py-2 border rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
+              />
+            </div>
           </div>
           {/* Password */}
           <div>
             <label
               htmlFor='password'
-              className="block text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
+              className="block text-[#344053] text-right mb-1 text-sm font-medium font-['Poppins'] leading-tight"
             >
-              Password*
+              الرقم السري*
             </label>
-            <span className='text-red-500 text-xs'>{errors.password}</span>
+            <span className='text-red-500 text-xs'>{errors?.password}</span>
             <input
+              required
               onChange={(e) => setPassword(e.target.value)}
               id='password'
               type='password'
@@ -165,7 +169,6 @@ const Signup = () => {
               className="w-full px-4 py-2 border rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
             />
           </div>
-
           <div className='flex items-center space-x-4'>
             {/* Avatar or Uploaded Image */}
             <div>
@@ -173,13 +176,19 @@ const Signup = () => {
                 <img
                   src={imageSrc}
                   alt='Uploaded'
-                  className='w-12 h-12 rounded-full object-cover'
+                  className='w-20 h-20 rounded-xl object-cover'
                 />
               ) : (
+                // <img
+                //   src={avator} // Default avatar placeholder
+                //   alt='Avatar'
+                //   className='w-12 h-12 rounded-full'
+                // />
                 <img
-                  src={avator} // Default avatar placeholder
-                  alt='Avatar'
-                  className='w-12 h-12 rounded-full'
+                  width='100'
+                  height='100'
+                  src='https://img.icons8.com/cotton/100/image-file-add--v2.png'
+                  alt='image-file-add--v2'
                 />
               )}
             </div>
@@ -187,12 +196,16 @@ const Signup = () => {
             {/* File Input */}
             <label className='flex items-center space-x-2 cursor-pointer'>
               <Upload className='w-5 h-5 text-blue-500' />
-              <span className='text-sm font-medium text-black'>
-                Upload Advertising image
+              <span className='text-sm text-right font-medium text-black'>
+                الصورة الاعلانية أو الشخصية
               </span>
-              <span className='text-red-500 text-xs'>{errors.image}</span>
+              {!imageSrc && (
+                <span className='text-red-500 text-xs'>*Required</span>
+              )}
+              <span className='text-red-500 text-xs'>{errors?.image}</span>
               <input
                 type='file'
+                name='image'
                 className='hidden'
                 accept='image/*'
                 onChange={handleImageUpload}
@@ -200,39 +213,35 @@ const Signup = () => {
             </label>
           </div>
           {/* Address */}
-          <div>
+          {/* <div>
             <label
               htmlFor='Address'
               className="block text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
             >
               Address*
             </label>
-            <span className='text-red-500 text-xs'>{errors.address}</span>
+            <span className='text-red-500 text-xs'>{errors?.address}</span>
             <textarea
               name=''
+              required
               className="w-full px-4 py-2 border rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
               onChange={(e) => setAddress(e.target.value)}
               id=''
               cols='10'
               rows='4'
             ></textarea>
-            {/* <textarea
-           
-              id='Address'
-             
-              placeholder='Enter your address'
-              className="w-full px-4 py-2 border rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
-            /> </textarea> */}
-          </div>
+          
+          </div> */}
           <div>
             <label
               htmlFor='about'
-              className="block text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
+              className="block text-right text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
             >
-              About*
+              نبذة*
             </label>
-            <span className='text-red-500 text-xs'>{errors.about}</span>
+            <span className='text-red-500 text-xs'>{errors?.about}</span>
             <textarea
+              required
               name=''
               className="w-full px-4 py-2 border rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
               onChange={(e) => setAbout(e.target.value)}
@@ -249,15 +258,14 @@ const Signup = () => {
             /> </textarea> */}
           </div>
           {/* Provinces */}
-
           <div>
             <label
               htmlFor='provinces'
-              className="block text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
+              className="block text-right text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
             >
-              Select Provinces*
+              اختر المحافظة*
             </label>
-            <span className='text-red-500 text-xs'>{errors.provinces}</span>
+            <span className='text-red-500 text-xs'>{errors?.provinces}</span>
             <div className='flex justify-between gap-4'>
               <select
                 onChange={(e) => setProvince(JSON.parse(e.target.value))}
@@ -272,24 +280,22 @@ const Signup = () => {
                 ))}
               </select>
               <button
+                type='button'
                 onClick={() => {
                   if (
                     !selectedProvinces.some((cat) => cat.id === province.id)
                   ) {
-                    setSelectedProvinces([
-                      ...selectedProvinces,
-                      province,
-                    ])
+                    setSelectedProvinces([...selectedProvinces, province])
                   }
                 }}
                 className="w-1/2 px-4 py-2 bg-[#0083b3] text-white rounded-xl text-base font-semibold font-['Poppins'] leading-normal"
               >
-                Add
+                اضف
               </button>{' '}
             </div>
           </div>
           <div>
-            <h1>Provinces</h1>
+            <h1 className='text-right'>المقاطعات</h1>
             <div className='flex flex-wrap gap-2'>
               {selectedProvinces.map((province, index) => (
                 <div
@@ -298,6 +304,7 @@ const Signup = () => {
                 >
                   <span className='text-sm text-gray-700'>{province.name}</span>
                   <button
+                    type='button'
                     onClick={() =>
                       setSelectedProvinces(
                         selectedProvinces.filter((_, i) => i !== index)
@@ -326,13 +333,14 @@ const Signup = () => {
           <div>
             <label
               htmlFor='section'
-              className="block text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
+              className="block text-right text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
             >
-              Choose the section*
+              اختر القسم*
             </label>
-            <span className='text-red-500 text-xs'>{errors.category_id}</span>
+            <span className='text-red-500 text-xs'>{errors?.category_id}</span>
             <select
               id='section'
+              required
               onChange={(e) => setCategory(JSON.parse(e.target.value))}
               className="w-full px-4 py-2 bg-white border border-[#0e0f10] rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
             >
@@ -344,16 +352,15 @@ const Signup = () => {
               ))}
             </select>
           </div>
-
           {/* Categories */}
           <div>
             <label
               htmlFor='categories'
-              className="block text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
+              className="block text-right text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
             >
-              Select Categories*
+              اختر الفئة*
             </label>
-            <span className='text-red-500 text-xs'>{errors.categories}</span>
+            <span className='text-red-500 text-xs'>{errors?.categories}</span>
             <div className='flex justify-between gap-4'>
               <select
                 onChange={(e) => setSubCategory(JSON.parse(e.target.value))}
@@ -368,6 +375,7 @@ const Signup = () => {
                 ))}
               </select>
               <button
+                type='button'
                 onClick={() => {
                   if (!subCategories.some((cat) => cat.id === subCategory.id)) {
                     setSubCategories([...subCategories, subCategory])
@@ -375,12 +383,13 @@ const Signup = () => {
                 }}
                 className="w-1/2 px-4 py-2 bg-[#0083b3] text-white rounded-xl text-base font-semibold font-['Poppins'] leading-normal"
               >
-                Add
+                اضف
               </button>{' '}
             </div>
           </div>
           <div>
-            <h1>Categories</h1>
+            {subCategories.length > 0 ?   <h1 className='text-right'>فئات</h1> : ''}
+         
             <div className='flex flex-wrap gap-2'>
               {subCategories.map((category, index) => (
                 <div
@@ -389,6 +398,7 @@ const Signup = () => {
                 >
                   <span className='text-sm text-gray-700'>{category.name}</span>
                   <button
+                    type='button'
                     onClick={() =>
                       setSubCategories(
                         subCategories.filter((_, i) => i !== index)
@@ -414,79 +424,63 @@ const Signup = () => {
             </div>{' '}
           </div>
           {/* Agreement */}
-          <div className='flex items-center space-x-2'>
-            <div
-              className={`w-5 h-5 flex items-center justify-center rounded-full border-2 cursor-pointer ${
+          <div className='flex justify-end items-center space-x-2'>
+            <label
+              htmlFor='governorate'
+              className="text-[#475466] text-sm font-medium font-['Poppins'] leading-tight"
+            >
+              سياسة الاستخدام
+            </label>{' '}
+            <input
+              type='checkbox'
+              required
+              id='governorate'
+              className={`w-5 h-5 rounded-full cursor-pointer ${
                 isChecked.governorate
                   ? 'border-green-500 bg-green-500'
                   : 'border-gray-400 bg-gray-200'
               }`}
-              onClick={() => toggleCheckbox('governorate')}
-            >
-              <svg
-                className={`w-3 h-3 ${
-                  isChecked.governorate ? 'text-white' : 'text-gray-500'
-                }`}
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M5 13l4 4L19 7'
-                ></path>
-              </svg>
-            </div>
-            <label className="text-[#475466] text-sm font-medium font-['Poppins'] leading-tight">
-              Governorate
-            </label>
+              checked={isChecked.governorate}
+              onChange={() => toggleCheckbox('governorate')}
+            />
           </div>
-          <div className='flex items-center space-x-2'>
-            <div
-              className={`w-5 h-5 flex items-center justify-center rounded-full border-2 cursor-pointer ${
-                isChecked.terms
-                  ? 'border-green-500 bg-green-500'
-                  : 'border-gray-400 bg-gray-200'
-              }`}
-              onClick={() => toggleCheckbox('terms')}
+          <div className='flex items-center justify-end space-x-2'>
+            <label
+              htmlFor='terms'
+              className="text-[#475466] text-sm font-medium font-['Poppins'] leading-tight"
             >
-              <svg
-                className={`w-3 h-3 ${
-                  isChecked.terms ? 'text-white' : 'text-gray-500'
-                }`}
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M5 13l4 4L19 7'
-                ></path>
-              </svg>
-            </div>
-            <label className="text-[#475466] text-sm font-medium font-['Poppins'] leading-tight">
               Agree to{' '}
               <a
                 href='#'
                 className="underline text-[#475466] font-medium font-['Poppins']"
               >
-                terms & Conditions
+                الشروط والاحكام
               </a>
-            </label>
+            </label>{' '}
+            <input
+              type='checkbox'
+              required
+              id='terms'
+              className={`w-5 h-5 rounded-full cursor-pointer ${
+                isChecked.terms
+                  ? 'border-green-500 bg-green-500'
+                  : 'border-gray-400 bg-gray-200'
+              }`}
+              checked={isChecked.terms}
+              onChange={() => toggleCheckbox('terms')}
+            />
           </div>
-
           {/* Submit Button */}
-
+          {errors?.image ? (
+            <p className='text-red-500'>Please Select a Profile Image</p>
+          ) : (
+            ''
+          )}
           <button
-            onClick={handleRegistration}
-            className="w-full px-4 py-2 bg-[#0083b3] text-white rounded-full text-base font-semibold font-['Poppins'] flex items-start justify-center gap-3 leading-normal"
+            type='submit'
+            className="w-full px-4 cursor-pointer py-2 bg-[#0083b3] text-white rounded-full text-base font-semibold font-['Poppins'] flex items-start justify-center gap-3 leading-normal"
             disabled={isLoading}
+            title={!imageSrc ? 'Profile image is required' : ''}
           >
             {isLoading ? (
               <svg
@@ -500,9 +494,9 @@ const Signup = () => {
             ) : (
               ''
             )}
-            Registration
-          </button>
-        </div>
+            سجل
+          </button>{' '}
+        </form>
       </div>
     </div>
   )

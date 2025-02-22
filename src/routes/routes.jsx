@@ -16,7 +16,7 @@ import PaymentSuccess from "../components/pages/PaymentSuccess";
 import RegistrationSuccess from "../components/pages/RegistrationSuccess";
 import Contact from "../components/pages/Contact";
 import About from "../components/pages/About";
-import cancelled from "../components/pages/cancelled";
+import Cancelled from "../components/pages/cancelled";
 import Technician from '../components/pages/Technician'
 // import { LogIn } from "lucide-react";
 
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/cancelled',
-        element: <cancelled></cancelled>, // Home is the default component
+        element: <Cancelled></Cancelled>, // Home is the default component
       },
       {
         path: '/contact',

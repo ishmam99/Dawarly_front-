@@ -75,7 +75,7 @@ useEffect(() => {
       {/* Subcategories Section */}
       <div className='grid grid-cols-2 lg:grid-cols-4 lg:gap-[20px] md:gap-4 gap-2 md:mt-10 max-w-7xl lg:mx-auto md:mx-6 px-2 lg:px-4'>
         {category.sub_categories.map((category, index) => (
-          <Link to={`/subcategory/${category.slug}`} key={index}
+          <Link to={`/subcategory/${category.slug}`}
             key={index}
           
             className=' py-6 rounded-xl border-1 lg:px-6 md:px-4 px-2 w-full flex md:flex-col gap-2 items-center md:justify-center transition-all cursor-pointer border-[#0083b3] hover:bg-[#0083b3] group'

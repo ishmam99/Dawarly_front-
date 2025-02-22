@@ -28,7 +28,7 @@ const Verification = () => {
     }
 
   const handleSubmit = async (e) => {
-      console.log('dffsfds')
+     
       e.preventDefault()
       setLoading(true)
     const newErrors = validateForm()
@@ -36,11 +36,22 @@ const Verification = () => {
       if (Object.keys(newErrors).length === 0) {
         try {
           const response = await login(formData.phone, formData.password)
-          console.log('Login successful:', response)
-          // Handle successful login here
-          navigate('/')
+          console.log(response)
+           if (response.status === 200) {
+             navigate('/profile')
+           } else if (response.status === 404) {
+             navigate('/signup')
+           } else if (response.status === 401) {
+             setErrors({
+               phone: 'Invalid phone or password',
+             })
+           } else {
+             setErrors({
+               phone: 'Something went wrong',
+             })
+           }
         } catch (error) {
-          console.error('Login failed:', error.response.data.message)
+          console.error('Login failed:', error)
           // Handle login failure here
         }
       } else {
@@ -105,10 +116,11 @@ const Verification = () => {
       {/* Button */}
       <button
         // Navigate to the Verification OTP page 
-        type="submit"
+        type="submit" disabled={loading}
         className='w-full h-[50px] bg-[#0083b3] text-white rounded-[30px] text-base font-medium uppercase'
       >
-        Login
+        {loading ? 'Loading...' : 'Login'}
+        
       </button>
     </form>
   )

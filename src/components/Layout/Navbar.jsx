@@ -5,7 +5,7 @@ import {
 } from "@headlessui/react";
 
 import logo from "../../assets/logo/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -20,7 +20,15 @@ function classNames(...classes) {
 
 export default function Header() {
   const { user, login, logout, getUser } = useAuthContext()
- 
+  const navigate = useNavigate()
+  const handleLogout = async () => {
+    try {
+      await logout()
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
     try {
       getUser()
@@ -40,7 +48,7 @@ export default function Header() {
               </Link>
             </div>
           </div>
-
+    
           <div className='flex space-x-4'>
             <div className='hidden sm:ml-6 sm:block'>
               {/* {navigation.map((item) => (
@@ -94,12 +102,13 @@ export default function Header() {
                   </span>
                 </Link>
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className='md:block hidden px-8 cursor-pointer py-1 bg-[#1a2880] text-white rounded-full hover:text-white'
                   style={{ fontFamily: 'Poppins' }}
                 >
                   Logout
                 </button>
+               
               </div>
             ) : (
               <Link to='login'>
