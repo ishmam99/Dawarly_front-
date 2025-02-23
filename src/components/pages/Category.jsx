@@ -74,22 +74,21 @@ useEffect(() => {
 
       {/* Subcategories Section */}
       <div className='grid grid-cols-2 lg:grid-cols-4 lg:gap-[20px] md:gap-4 gap-2 md:mt-10 max-w-7xl lg:mx-auto md:mx-6 px-2 lg:px-4'>
-        {category.sub_categories.map((category, index) => (
-          <Link to={`/subcategory/${category.slug}`}
+        {category.sub_categories.map((categoryData, index) => (
+          <Link
+            to={`/subcategory/${categoryData.slug}?categoryName=${category?.name}`}
             key={index}
-          
             className=' py-6 rounded-xl border-1 lg:px-6 md:px-4 px-2 w-full flex md:flex-col gap-2 items-center md:justify-center transition-all cursor-pointer border-[#0083b3] hover:bg-[#0083b3] group'
           >
             <div className='lg:mb-6 rounded-full flex lg:items-center lg:justify-center justify-start'>
-              
               <img
-                src={category.image}
-                alt={category.name}
+                src={categoryData.image}
+                alt={categoryData.name}
                 className='lg:w-16 lg:h-16 md:w-14 md:h-14 w-12 h-10 lg:object-contain group-hover:filter group-hover:invert'
               />
             </div>
             <div className="md:text-base text-sm font-semibold lg:text-center font-['Poppins'] text-[#3a4e39] group-hover:text-white">
-              {category.name}
+              {categoryData.name}
             </div>
           </Link>
         ))}
