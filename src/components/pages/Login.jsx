@@ -117,7 +117,7 @@ const Verification = () => {
       <button
         // Navigate to the Verification OTP page 
         type="submit" disabled={loading}
-        className='w-full h-[50px] bg-[#0083b3] text-white rounded-[30px] text-base font-medium uppercase'
+        className='w-full h-[50px] cursor-pointer bg-[#0083b3] text-white rounded-[30px] text-base font-medium uppercase'
       >
         {loading ? 'Loading...' : 'Login'}
         
