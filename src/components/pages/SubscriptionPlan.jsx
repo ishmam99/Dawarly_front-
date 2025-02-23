@@ -58,12 +58,10 @@ const SubscriptionPlan = () => {
           {/* Subscription Plans Section */}
           <div className='mb-12'>
             <h1 className="text-black text-lg font-medium font-['Poppins']">
-              Subscription plans
+              خطة الاشتراك
             </h1>
             <p className="text-black text-sm font-normal font-['Poppins'] mt-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem
-              ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum
-              dolor sit amet, consectetur.
+              أهلا وسهلا بك من هنا يمكنك اختيار خطة الدفع المناسبة لك
             </p>
           </div>
           {/* Plans */}

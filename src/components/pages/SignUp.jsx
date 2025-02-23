@@ -116,7 +116,7 @@ const Signup = () => {
               htmlFor='fullName'
               className="block text-right text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
             >
-              نبذة*
+              الاسم أو الاسم التجاري
             </label>
             <span className='text-red-500 text-xs'>{errors?.name}</span>
             <input
@@ -237,7 +237,7 @@ const Signup = () => {
               htmlFor='about'
               className="block text-right text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
             >
-              نبذة*
+              اضف اعلانك هنا*
             </label>
             <span className='text-red-500 text-xs'>{errors?.about}</span>
             <textarea
@@ -263,7 +263,7 @@ const Signup = () => {
               htmlFor='provinces'
               className="block text-right text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
             >
-              اختر المحافظة*
+              المحافظات*
             </label>
             <span className='text-red-500 text-xs'>{errors?.provinces}</span>
             <div className='flex justify-between gap-4'>
@@ -388,8 +388,11 @@ const Signup = () => {
             </div>
           </div>
           <div>
-            {subCategories.length > 0 ?   <h1 className='text-right'>فئات</h1> : ''}
-         
+            {subCategories.length > 0 ? (
+              <h1 className='text-right'>فئات</h1>
+            ) : (
+              ''
+            )}
             <div className='flex flex-wrap gap-2'>
               {subCategories.map((category, index) => (
                 <div

@@ -52,7 +52,7 @@ const HomeProduct = () => {
                 className=' lg:object-cover group-hover:filter group-hover:brightness-0 group-hover:invert'
               />
             </div>
-            <div className="md:text-base text-xs font-semibold md:text-center font-['Poppins'] text-[#3a4e39] group-hover:text-white">
+            <div className="md:text-base text-xs font-bold md:text-center font-['Poppins'] text-[#3a4e39] group-hover:text-white">
               {product.name}
             </div>
           </Link>
