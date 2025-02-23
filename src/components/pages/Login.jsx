@@ -108,7 +108,7 @@ const Verification = () => {
             onChange={handleChange}
             type='password'
             placeholder='Enter your password'
-            className='w-full h-[50px] px-4 rounded-[30px] border border-[#0083b3] text-sm text-[#2c2e33] focus:outline-none focus:ring focus:ring-[#0083b3]'
+            className='w-full h-[50px] px-4 rounded-[30px] border border-[#0083b3] text-sm text-[#2c2e33]  focus:ring focus:ring-[#0083b3]'
           />
         </div>
       </div>

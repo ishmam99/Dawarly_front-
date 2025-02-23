@@ -10,20 +10,37 @@ const SubscriptionPlan = () => {
   const [selectedMethod, setSelectedMethod] = useState(1);
   const [paymentMethods, setPaymentMethods] = useState([])
   const navigate = useNavigate();
-
+  const [error, setError] = useState(null);
   const handlePlanClick = (plan) => {
     setSelectedPlan(plan);
   };
 
   const handleCheckout = () => {
-   setLoading(true)
-    initiatePayment({
-      payment_method_id: selectedMethod, // Example: 1 for KNET
-      amount: selectedPlan,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-    })
+    setLoading(true)
+    try {
+      if (!selectedPlan) {
+        alert("Please select a plan.");
+        return;
+      }
+      if (!selectedMethod) {
+        alert("Please select a payment method.");
+        return;
+      }
+     
+  
+      initiatePayment({
+        payment_method_id: selectedMethod, // Example: 1 for KNET
+        amount: selectedPlan,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+      })
+    }
+    catch (error) {
+      console.error('Payment initiation failed', error)
+      setError('An error occurred during payment initiation.')
+       setLoading(false)
+    }
   };
   const fetchPaymentMethods = async () => {
     const response = await axios.get('getPaymentMethods')
@@ -38,8 +55,10 @@ const SubscriptionPlan = () => {
       if (Data && Data.PaymentURL) {
         window.location.href = Data.PaymentURL // Redirect to payment page
       }
-      // setLoading(false)
+      setError(response.data.ValidationErrors[0].Error)
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       console.error('Payment initiation failed', error)
     }
   }
@@ -131,6 +150,7 @@ const SubscriptionPlan = () => {
             ))}
           </div>{' '}
           {/* Checkout Button */}
+          {error && <p className='text-red-500'>{error}</p>}
           <div className='mt-6 mb-6'>
             <button
               disabled={!selectedPlan || loading}

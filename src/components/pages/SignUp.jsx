@@ -82,7 +82,7 @@ const Signup = () => {
         navigate("/registration-success");
       }
     } catch (error) {
-      setErrors(error.response.data.errors)
+      setErrors(error.response.data?.errors)
       console.error("Registration failed:", error);
       setTimeout(() => {
        setErrors({}) 
@@ -143,7 +143,8 @@ const Signup = () => {
               </span>
               <input
                 required
-                onChange={(e) => setPhone(e.target.value)}
+                minLength="11"
+                onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
                 id='phone'
                 type='text'
                 placeholder='Enter your phone'
@@ -208,10 +209,17 @@ const Signup = () => {
                 name='image'
                 className='hidden'
                 accept='image/*'
-                onChange={handleImageUpload}
+                onChange={(e) => {
+                  const file = e.target.files[0]
+                  if (file && file.size > 5 * 1024 * 1024) {
+                    alert('File size must be less than 5MB')
+                    e.target.value = ''
+                    return
+                  }
+                  handleImageUpload(e)
+                }}
               />
-            </label>
-          </div>
+            </label>          </div>
           {/* Address */}
           {/* <div>
             <label

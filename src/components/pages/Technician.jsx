@@ -92,11 +92,14 @@ const ProfilePage = () => {
               />
             </div>
           </div>
+          <div className='text-center text-[#3e3e59] text-[14px] hidden sm:block font-normal leading-snug'>
+            {user?.about}
+          </div>
         </div>
-        <div className='px-6 py-8 bg-white rounded-lg border border-[#dbdbdb] flex flex-col justify-center items-center space-y-6'>
+        <div className='w-full px-6 py-8 bg-white rounded-lg border border-[#dbdbdb] sm:hidden flex flex-col justify-center items-center space-y-6'>
           <div className="w-full flex flex-col justify-center items-center gap-2 font-['Poppins']">
             <div className='flex flex-col items-center gap-1'>
-              <div className='text-center text-[#3e3e59] text-[12px] font-normal leading-snug'>
+              <div className='text-center text-[#3e3e59] text-[14px] font-normal leading-snug'>
                 {user?.about}
               </div>
             </div>
@@ -106,8 +109,8 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        <div className='md:hidden block'>
-          <div className='w-[310px] p-2 bg-white rounded-lg border text-sm border-[#dbdbdb] flex flex-col justify-center items-center space-y-6'>
+        <div className='md:hidden w-full block'>
+          <div className='w-full p-2 bg-white rounded-lg border text-sm border-[#dbdbdb] flex flex-col justify-center items-center space-y-6'>
             {/* <p>{user?.address}</p> */}
 
             <div className='flex gap-3 mb-2'>
