@@ -45,6 +45,7 @@ const SubscriptionPlan = () => {
   }
   useEffect(() => {
     fetchPaymentMethods()
+    getUser()
   }, [])  
   return (
     <div className='h-screen'>
@@ -76,8 +77,8 @@ const SubscriptionPlan = () => {
               </div>
               <div
                 className={`p-4 border rounded-b-md ${
-                  selectedPlan === '1-year-plan'
-                    ? 'border-[#0083b3] border-2'
+                  selectedPlan === 10
+                    ? 'border-[#0083b3] border-3 bg-blue-100'
                     : 'border-[#0083b3]'
                 }`}
                 onClick={() => handlePlanClick(10)}
@@ -92,8 +93,8 @@ const SubscriptionPlan = () => {
             {/* Plan 2 */}
             <div
               className={`relative border rounded-lg overflow-hidden cursor-pointer ${
-                selectedPlan === '6-month-plan'
-                  ? 'border-[#0083b3] border-2'
+                selectedPlan === 6
+                  ? 'border-[#0083b3] border-3 bg-blue-100'
                   : 'border-[#0083b3]'
               }`}
               onClick={() => handlePlanClick(6)}

@@ -60,7 +60,7 @@ const HomeProduct = () => {
       </div>
       <div className='flex justify-center items-center my-10'>
         <Link to='signup'>
-          <button className="text-center px-8 py-3 bg-[#0083b3] rounded-full font-['Poppins'] text-white md:text-lg font-medium ">
+          <button className="text-center px-8 py-3 cursor-pointer bg-[#0083b3] rounded-full font-['Poppins'] text-white md:text-lg font-medium ">
             سجل معنا
           </button>
         </Link>

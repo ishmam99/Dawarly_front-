@@ -19,7 +19,7 @@ const About = () => {
         </div>
 
         {/* Right Side - Title & Paragraph */}
-        <div className='flex flex-col justify-center mt-6 md:mt-0 md:pl-12 text-center md:text-left'>
+        <div className='flex px-5 flex-col justify-center mt-6 md:mt-0 md:pl-12 text-center md:text-left'>
           <h2 className="text-3xl text-end font-bold text-gray-800 mb-4 font-['Poppins']">
             عن شركتنا
           </h2>

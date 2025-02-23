@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom'
 import axios from '../../api/axios';
 import mobileLogo from "../../assets/logo/mobile-logo-2.svg";
 import call from "../../assets/pictures/call.svg";
@@ -9,6 +14,7 @@ import whatsapp from "../../assets/pictures/whatsapp.svg";
 
 
 export const SubCategoryShow = () => {
+    const [searchParams] = useSearchParams()
    const [provinces, setProvinces] = useState([])
   const location = useLocation()
   const [technicians, setTechnicians] = useState([])
@@ -16,6 +22,7 @@ export const SubCategoryShow = () => {
   const [subCategory, setSubCategory] = useState({
     technicians: [],
   });
+  const categoryName = searchParams.get('categoryName')
   const electricians = Array(8).fill({
     name: "Jhon Doe",
     description: "Lorem Ipsum is simply dummy text.",
@@ -30,6 +37,7 @@ export const SubCategoryShow = () => {
      setProvinces(data)
    }
   useEffect(() => {
+  console.log(categoryName)
     getSubCategory()
     getProvinces()
   }, []);
@@ -168,9 +176,7 @@ export const SubCategoryShow = () => {
         {technicians.map((technician, index) =>
           technician.status !== 'pending' ? (
             <Link
-              to={'/technicians/' + technician.id}
-              key={index}
-              className='py-4 bg-white rounded-lg border border-gray-300 flex flex-col items-center shadow-sm cursor-pointer hover:shadow-md'
+              to={`/technicians/${technician.id}?subcategoryName=${subCategory?.name}&categoryName=${categoryName}`}              key={index}              className='py-4 bg-white rounded-lg border border-gray-300 flex flex-col items-center shadow-sm cursor-pointer hover:shadow-md'
             >
               <div className='lg:w-[111px] lg:h-[111px] md:w-[80px] md:h-[80px] w-[60px] h-[60px] md:mt-6 bg-[#d9d9d9] rounded-full'>
                 <img src={technician.image} className='w-full h-full' alt='' />
