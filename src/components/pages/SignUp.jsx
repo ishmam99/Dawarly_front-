@@ -143,8 +143,14 @@ const Signup = () => {
               </span>
               <input
                 required
-                minLength="11"
-                onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
+                minLength='8'
+                onChange={(e) => {
+                  let value = e.target.value.replace(/[^0-9]/g, '')
+                  if (!value.startsWith('965')) {
+                    value = '965' + value
+                  }
+                  setPhone(value)
+                }}
                 id='phone'
                 type='text'
                 placeholder='Enter your phone'
@@ -193,7 +199,6 @@ const Signup = () => {
                 />
               )}
             </div>
-
             {/* File Input */}
             <label className='flex items-center space-x-2 cursor-pointer'>
               <Upload className='w-5 h-5 text-blue-500' />
@@ -219,7 +224,8 @@ const Signup = () => {
                   handleImageUpload(e)
                 }}
               />
-            </label>          </div>
+            </label>{' '}
+          </div>
           {/* Address */}
           {/* <div>
             <label
