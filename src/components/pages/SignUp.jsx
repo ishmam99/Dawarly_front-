@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import arrow from '../../assets/pictures/left-arrow.svg'
 import { Upload } from "lucide-react";
 import avator from "../../assets/avator/unsplash_SE4Xc1WvIkU.png";
 import { useEffect } from "react";
@@ -8,6 +9,7 @@ import axios from '../../api/axios'
 const Signup = () => {
   const { user, login, register, logout, getUser } = useAuthContext()
   const [isLoading , setIsLoading] = useState(false)
+  const [isSelected, setIsSelected] = useState(false)
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [phone, setPhone] = useState(null);
@@ -22,7 +24,36 @@ const Signup = () => {
   const [subCategory , setSubCategory] = useState({})
   const [subCategories, setSubCategories] = useState([])
   const [selectedProvinces, setSelectedProvinces] = useState([])
-  const [errors, setErrors] = useState({ })
+  const [errors, setErrors] = useState({})
+  ///
+
+// const ProvinceSelector = ({ provinces }) => {
+  // const [selectedProvinces, setSelectedProvinces] = useState([]);
+  const [selectedIds, setSelectedIds] = useState([]); // Track checked provinces
+
+  // Toggle checkboxes
+  const handleCheckboxChange = (id) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
+    );
+  };
+
+  // Add selected provinces
+  const handleAddProvinces = () => {
+    const newProvinces = provinces.filter((p) => selectedIds.includes(p.id));
+    const uniqueProvinces = newProvinces.filter(newProvince => 
+      !selectedProvinces.some(existingProvince => existingProvince.id === newProvince.id)
+    );
+    setSelectedProvinces((prev) => [...prev, ...uniqueProvinces]);
+    setSelectedIds([]); // Clear selection after adding
+  };
+
+  // Remove selected province
+  const handleRemoveProvince = (id) => {
+    setSelectedProvinces(selectedProvinces.filter((p) => p.id !== id));
+  };
+
+  ///
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -102,6 +133,16 @@ const Signup = () => {
   },[])
   return (
     <div className='max-w-7xl lg:mx-auto md:mx-6 mx-4 py-16 '>
+      <div className='flex justify-end items-center p-4 mb-10 md:hidden top-0 bottom-0'>
+        <div className='bg-[#0083B3] p-2 rounded-full'>
+          <img
+            src={arrow}
+            alt='arrow'
+            className=' w-5 h-5 relative overflow-hidden cursor-pointer'
+            onClick={() => navigate(-1)}
+          />
+        </div>
+      </div>
       <div className='md:mb-0 mb-24'>
         <h2 className="text-[#0f1728] text-3xl text-center font-normal font-['Poppins'] leading-[38px] mb-6">
           Create an account
@@ -143,7 +184,8 @@ const Signup = () => {
               </span>
               <input
                 required
-                minLength='8'
+                minLength={8}
+                maxLength={8}
                 onChange={(e) => {
                   let value = e.target.value.replace(/[^0-9]/g, '')
                   if (!value.startsWith('965')) {
@@ -272,7 +314,7 @@ const Signup = () => {
             /> </textarea> */}
           </div>
           {/* Provinces */}
-          <div>
+          {/* <div>
             <label
               htmlFor='provinces'
               className="block text-right text-[#344053] mb-1 text-sm font-medium font-['Poppins'] leading-tight"
@@ -286,7 +328,7 @@ const Signup = () => {
                 id='provinces'
                 className="w-full px-4 py-2 bg-white border border-[#cfd4dc] rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
               >
-                <option value=''>Select Province</option>
+                <option value=''>اختر المقاطعة</option>
                 {provinces?.map((province) => (
                   <option key={province.id} value={JSON.stringify(province)}>
                     {province.name}
@@ -307,8 +349,8 @@ const Signup = () => {
                 اضف
               </button>{' '}
             </div>
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <h1 className='text-right'>المقاطعات</h1>
             <div className='flex flex-wrap gap-2'>
               {selectedProvinces.map((province, index) => (
@@ -342,6 +384,78 @@ const Signup = () => {
                 </div>
               ))}
             </div>{' '}
+          </div> */}
+          {/* New Checkbox system */}
+          <div>
+            <h1 className='text-right font-semibold mb-2'>المقاطعات</h1>
+
+            {/* ✅ Checkbox List */}
+            <div
+              onClick={() => setIsSelected(true)}
+              className={`border ${
+                isSelected ? 'h-[200px]' : 'h-[60px]'
+              } overflow-y-scroll p-3 rounded-lg bg-gray-50`}
+            >
+              <label key={province.id} className='flex items-center gap-2 mb-1'>
+                <span className='text-sm text-gray-700'>
+                  -- اختر المقاطعة --
+                </span>
+              </label>
+              {provinces.map((province) => (
+                <label
+                  key={province.id}
+                  className='flex items-center gap-2 mb-1'
+                >
+                  <input
+                    type='checkbox'
+                    value={province.id}
+                    checked={selectedIds.includes(province.id)}
+                    onChange={() => handleCheckboxChange(province.id)}
+                    className='w-4 h-4'
+                  />
+                  <span className='text-sm text-gray-700'>{province.name}</span>
+                </label>
+              ))}
+            </div>
+
+            {/* ✅ Add Button */}
+            <button
+                          onClick={() => {
+                            handleAddProvinces()
+                            setIsSelected(false)
+                          }}              disabled={selectedIds.length === 0}
+              className={`mt-3 w-full px-4 py-2 rounded-xl text-white text-base font-semibold ${
+                selectedIds.length === 0
+                  ? 'bg-gray-400'
+                  : 'bg-[#0083b3] hover:bg-[#006a8b]'
+              }`}
+            >
+              اضف المقاطعات
+            </button>
+
+            {/* ✅ Selected Provinces Display */}
+            {selectedProvinces.length > 0 && (
+              <div className='mt-3 p-3 border rounded-lg bg-gray-100'>
+                <p className='font-medium mb-2'>المقاطعات المختارة:</p>
+                <div className='flex flex-wrap gap-2'>
+                  {selectedProvinces.map((p) => (
+                    <div
+                      key={p.id}
+                      className='flex items-center bg-white px-3 py-1 rounded-full shadow-sm'
+                    >
+                      <span className='text-sm text-gray-700'>{p.name}</span>
+                      <button
+                        onClick={() => handleRemoveProvince(p.id)}
+                        className='ml-2 text-gray-500 hover:text-red-500'
+                        aria-label={`Remove ${p.name}`}
+                      >
+                        ✖
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           {/* Section */}
           <div>
@@ -358,7 +472,7 @@ const Signup = () => {
               onChange={(e) => setCategory(JSON.parse(e.target.value))}
               className="w-full px-4 py-2 bg-white border border-[#0e0f10] rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
             >
-              <option value=''>Select a category</option>
+              <option value=''>حدد فئة</option>
               {categories.map((category) => (
                 <option key={category.id} value={JSON.stringify(category)}>
                   {category.name}
@@ -381,7 +495,7 @@ const Signup = () => {
                 id='categories'
                 className="w-full px-4 py-2 bg-white border border-[#cfd4dc] rounded-lg text-[#667084] text-base font-normal font-['Poppins'] leading-normal shadow-sm"
               >
-                <option value=''>Select Category</option>
+                <option value=''>حدد الفئة</option>
                 {category.sub_categories?.map((category) => (
                   <option key={category.id} value={JSON.stringify(category)}>
                     {category.name}
@@ -467,12 +581,12 @@ const Signup = () => {
               className="text-[#475466] text-sm font-medium font-['Poppins'] leading-tight"
             >
               Agree to{' '}
-              <a
-                href='#'
+              <Link
+                to='/terms-and-conditions'
                 className="underline text-[#475466] font-medium font-['Poppins']"
               >
                 الشروط والاحكام
-              </a>
+              </Link>
             </label>{' '}
             <input
               type='checkbox'

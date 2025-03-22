@@ -4,7 +4,10 @@ import { useState } from "react";
 import contact from "../../assets/contact/contact.png";
 import mobileLogo from "../../assets/logo/mobile-logo-2.svg";
 import axios from '../../api/axios'
+import arrow from '../../assets/pictures/left-arrow.svg'
+import { useNavigate } from 'react-router-dom'
 export default function Contact() {
+const navigate = useNavigate()
   const [formData, setFormData] = useState({
     first_name: "",
     name: "",
@@ -36,8 +39,20 @@ const [loading, setLoading] = useState(false)
   }
   return (
     <div className='max-w-7xl mx-auto'>
-      <div className='flex justify-center items-center  md:hidden top-0 bottom-0'>
-        <img src={mobileLogo} alt='mobileLogo' className='w-24 h-24' />
+      <div className='absolute justify-end items-center   p-4  md:hidden top-0 right-0 bottom-0'>
+        <div className='flex justify-end items-center  p-4  md:hidden top-0 bottom-0'>
+          <div className='bg-[#0083B3] p-2 rounded-full'>
+            <img
+              src={arrow}
+              alt='arrow'
+              className=' w-5 h-5 relative overflow-hidden cursor-pointer'
+              onClick={() => navigate(-1)}
+            />
+          </div>
+        </div>
+      </div>
+      <div className='flex justify-center items-center my-4  md:hidden top-0 bottom-0'>
+        <img src={mobileLogo} alt='mobileLogo' className='w-20' />
       </div>
       <section className='mt-16 pb-24 z-10'>
         <div className='container mx-auto px-4 z-10'>
@@ -104,7 +119,6 @@ const [loading, setLoading] = useState(false)
                       <option value='+965'>+965</option>
                       {/* <option value='+1'>+1</option>
                       <option value='+44'>+44</option> */}
-                    
                     </select>
                     <span className='text-gray-400'>|</span>
                   </div>
@@ -150,16 +164,7 @@ const [loading, setLoading] = useState(false)
               </form>
             </div>
 
-            {/* Illustration and Description */}
-            <div className='col-span-3'>
-              <div className='flex flex-col items-center justify-center'>
-                <img
-                  src={contact} // Replace with the path to your illustration
-                  alt='Illustration'
-                  className='max-w-full'
-                />
-              </div>
-            </div>
+         
           </div>
         </div>
       </section>

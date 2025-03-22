@@ -91,9 +91,7 @@ const SubscriptionPlan = () => {
               <div className='bg-[#0083b3] rounded-t-md text-white p-4 text-base font-medium'>
                 Choose Your Plan
               </div>
-              <div className='absolute right-4 top-4 bg-[#ffb700] text-white px-2 py-1 rounded-full text-[10px] font-semibold'>
-                Save 75%
-              </div>
+           
               <div
                 className={`p-4 border rounded-b-md ${
                   selectedPlan === 10

@@ -18,6 +18,7 @@ import Contact from "../components/pages/Contact";
 import About from "../components/pages/About";
 import Cancelled from "../components/pages/cancelled";
 import Technician from '../components/pages/Technician'
+import Term from '../components/pages/Terms'
 // import { LogIn } from "lucide-react";
 
 const router = createBrowserRouter([
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <Login></Login>, // Home is the default component
+      },
+      {
+        path: '/terms-and-conditions',
+        element: <Term></Term>, // Home is the default component
       },
       {
         path: '/verificationOtp',

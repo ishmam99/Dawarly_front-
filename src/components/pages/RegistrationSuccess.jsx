@@ -20,8 +20,7 @@ const RegistrationSuccess = () => {
             Thanks for Registration
           </p>
           <p className="text-sm text-gray-500 mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum
-            dolor sit amet,
+           You will be redirected to the subscription page shortly. Please wait...
           </p>
         </div>
       </div>

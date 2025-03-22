@@ -8,6 +8,7 @@ import img6 from "../../assets/home-product-svg/sub-categories/exchange.svg";
 import mobileLogo from "../../assets/logo/mobile-logo-2.svg";
 import { useEffect, useState } from "react";
 import axios from '../../api/axios'
+import arrow from '../../assets/pictures/left-arrow.svg'
 const Category = () => {
   
 const location = useLocation()
@@ -59,6 +60,18 @@ useEffect(() => {
 
   return (
     <div className='min-h-[90vh] flex flex-col items-center w-full lg:my-16 bg-white '>
+      <div className='absolute justify-end items-center   p-4  md:hidden top-0 right-0 bottom-0'>
+        <div className='flex justify-end items-center  p-4  md:hidden top-0 bottom-0'>
+          <div className='bg-[#0083B3] p-2 rounded-full'>
+            <img
+              src={arrow}
+              alt='arrow'
+              className=' w-5 h-5 relative overflow-hidden cursor-pointer'
+              onClick={() => navigate(-1)}
+            />
+          </div>
+        </div>
+      </div>
       <div className='flex justify-center items-center mb-6 mt-2 lg:hidden top-0 bottom-0'>
         <img src={mobileLogo} alt='mobileLogo' className='w-24 h-24' />
       </div>
