@@ -63,7 +63,7 @@ const BottomNavbar = () => {
             />
           </Link>
         </div>
-        <div className='hover:bg-[#0083B3] p-2 rounded-full group'>
+        {/* <div className='hover:bg-[#0083B3] p-2 rounded-full group'>
           {user ? (
             <button onClick={handleLogout} className=''>
               <svg
@@ -87,7 +87,7 @@ const BottomNavbar = () => {
               </svg>
             </Link>
           )}
-        </div>
+        </div> */}
       </div>
     </nav>
   )

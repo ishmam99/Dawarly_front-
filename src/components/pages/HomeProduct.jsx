@@ -59,9 +59,17 @@ const HomeProduct = () => {
         ))}
       </div>
       <div className='flex justify-center items-center my-10'>
-        <Link to='signup'>
-          <button className="text-center px-8 py-3 cursor-pointer bg-[#0083b3] rounded-full font-['Poppins'] text-white md:text-lg font-medium ">
-            سجل معنا
+        <Link to='signup' className='w-1/2 flex justify-center items-center'>
+          <button className="text-center w-full sm:w-1/2 px-8 py-3 cursor-pointer bg-[#0083b3] flex items-center justify-center rounded-full font-['Poppins'] text-white md:text-lg font-medium ">
+            {/* سجل معنا */}
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 24 24'
+              fill='currentColor'
+              className='w-8 h-8'
+            >
+              <path d='M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z'></path>
+            </svg>
           </button>
         </Link>
       </div>
